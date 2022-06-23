@@ -26,6 +26,69 @@
                 "bucket",
                 "websiteUrl"
             ]
+        },
+        "xyz:index:Vpc": {
+          "isComponent": true,
+          "inputProperties": {
+            "availabilityZoneNames": {
+              "type": "array",
+              "description": "The list of target availability zone names.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "cidrBlock": {
+              "type": "string",
+              "description": "The IP CIDR block for the dedicated EKS VPC network."
+            },
+            "clusterName": {
+              "type": "string",
+              "description": "The name for the deployed EKS cluster."
+            },
+            "tags": {
+              "type": "object",
+              "description": "Tags to apply to all child resources."
+            }
+          },
+          "requiredInputs": [
+            "availabilityZoneNames",
+            "cidrBlock",
+            "clusterName",
+            "tags"
+          ],
+          "properties": {
+            "vpcResource": {
+              "$ref": "/aws/v5.2.0/schema.json#/resources/aws:ec2%2Fvpc:Vpc",
+              "description": "The VPC resource."
+            },
+            "publicSubnetIds": {
+              "type": "array",
+              "description": "List of IDs for the VPC's public subnets.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "controlPlaneSubnetIds": {
+              "type": "array",
+              "description": "List of IDs for the VPC's EKS Control Plane subnets.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "privateSubnetIds": {
+              "type": "array",
+              "description": "List of IDs for the VPC's private subnets.",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "vpcResource",
+            "publicSubnetIds",
+            "controlPlaneSubnetIds",
+            "privateSubnetIds"
+          ]
         }
     },
     "language": {

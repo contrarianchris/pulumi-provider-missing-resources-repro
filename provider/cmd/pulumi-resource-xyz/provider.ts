@@ -16,6 +16,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
 import { StaticPage, StaticPageArgs } from "./staticPage";
+import { Vpc, VpcArgs } from "./vpc";
 
 export class Provider implements provider.Provider {
     constructor(readonly version: string, readonly schema: string) { }
@@ -27,6 +28,10 @@ export class Provider implements provider.Provider {
         switch (type) {
             case "xyz:index:StaticPage":
                 return await constructStaticPage(name, inputs, options);
+
+            case "xyz:index:Vpc":
+                return await constructVpc(name, inputs, options);
+
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
@@ -48,3 +53,19 @@ async function constructStaticPage(name: string, inputs: pulumi.Inputs,
         },
     };
 }
+
+async function constructVpc(name: string, inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+
+    const vpc = new Vpc(name, inputs as VpcArgs, options);
+
+    return {
+      urn: vpc.urn,
+      state: {
+        vpcResource: vpc.vpcResource,
+        publicSubnetIds: vpc.publicSubnetIds,
+        controlPlaneSubnetIds: vpc.controlPlaneSubnetIds,
+        privateSubnetIds: vpc.privateSubnetIds,
+      },
+    };
+};

@@ -7,9 +7,11 @@ import * as utilities from "./utilities";
 // Export members:
 export * from "./provider";
 export * from "./staticPage";
+export * from "./vpc";
 
 // Import resources to register:
 import { StaticPage } from "./staticPage";
+import { Vpc } from "./vpc";
 
 const _module = {
     version: utilities.getVersion(),
@@ -17,6 +19,8 @@ const _module = {
         switch (type) {
             case "xyz:index:StaticPage":
                 return new StaticPage(name, <any>undefined, { urn })
+            case "xyz:index:Vpc":
+                return new Vpc(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
